@@ -22,3 +22,8 @@
     - import { createStackNavigator } from '@react-navigation/stack';
     - first parameter is a screen object where screen identifiers are mapped to screen components
 - Navigators are not exported. They are wrapped in createAppContainer
+
+
+# Components
+  ## images
+- when working with a network image, need to set width and height because component cant see that in advance
