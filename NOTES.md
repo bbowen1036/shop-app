@@ -9,3 +9,16 @@
 - Screens: yes, screens are components but they will hold all sub components. Start with screens
 - Components: all reusable custom components
 - Constants: colors, styles
+
+# initalize redux cycle
+- reducer
+- action 
+- dummy data
+- app js store and rootreducer instanciation 
+- useSelector in components allows to tap into redux store
+
+# Navigation
+- npm install @react-navigation/native @react-navigation/stack
+    - import { createStackNavigator } from '@react-navigation/stack';
+    - first parameter is a screen object where screen identifiers are mapped to screen components
+- Navigators are not exported. They are wrapped in createAppContainer
