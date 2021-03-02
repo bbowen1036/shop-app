@@ -9,6 +9,7 @@ import {
 } from "react-native";
 // Redux
 import { useSelector } from "react-redux";
+import COLORS from "../../constants/Colors";
 
 const ProductsDetailScreen = (props) => {
   const productId = props.navigation.getParam("productId");
@@ -17,9 +18,15 @@ const ProductsDetailScreen = (props) => {
   );
 
   return (
-    <View>
-      <Text>{selectedProduct.title}</Text>
-    </View>
+    <ScrollView>
+      <Image style={styles.image} source={{ uri: selectedProduct.imageUrl }} />
+      {/* Button takes FULL width so needs to be wrapped in a view to control */}
+      <View style={styles.actions}>    
+        <Button color={COLORS.primary} title="Add to Cart" onPress={() => {}} />
+      </View>
+      <Text style={styles.price}>${selectedProduct.price.toFixed(2)}</Text>
+      <Text style={styles.description}>{selectedProduct.description}</Text>
+    </ScrollView>
   );
 };
 
@@ -29,6 +36,26 @@ ProductsDetailScreen.navigationOptions = navData => {
   }
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  image: {
+    width: "100%",
+    height: 300
+  },
+  actions: {
+    marginVertical: 10,
+    alignItems: "center"
+  },
+  price: {
+    fontSize: 20,
+    color: "#888",
+    textAlign: "center",
+    marginVertical: 20
+  },
+  description: {
+    fontSize: 14,
+    textAlign: "center",
+    marginHorizontal: 20
+  }
+});
 
 export default ProductsDetailScreen;
