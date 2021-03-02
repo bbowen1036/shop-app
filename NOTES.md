@@ -16,6 +16,10 @@
 - dummy data
 - app js store and rootreducer instanciation 
 - useSelector in components allows to tap into redux store
+  - useSelector recieves the redux state where you can then tap into the slice you need at each component
+   ``` const selectedProduct = useSelector((state) =>
+    state.products.availableProducts.find((prod) => prod.id === productId)
+  );```
 
 # Navigation
 - npm install @react-navigation/native @react-navigation/stack

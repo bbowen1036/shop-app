@@ -7,14 +7,27 @@ import {
   Button,
   ScrollView,
 } from "react-native";
+// Redux
+import { useSelector } from "react-redux";
 
 const ProductsDetailScreen = (props) => {
+  const productId = props.navigation.getParam("productId");
+  const selectedProduct = useSelector((state) =>
+    state.products.availableProducts.find((prod) => prod.id === productId)
+  );
+
   return (
     <View>
-      <Text>The Product Detail Screen!</Text>
+      <Text>{selectedProduct.title}</Text>
     </View>
-  )
+  );
 };
+
+ProductsDetailScreen.navigationOptions = navData => {
+  return {
+    headerTitle: navData.navigation.getParam("productTitle")
+  }
+}
 
 const styles = StyleSheet.create({});
 
