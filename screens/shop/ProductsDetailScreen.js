@@ -8,10 +8,13 @@ import {
   ScrollView,
 } from "react-native";
 // Redux
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import * as cartActions from "../../store/actions/cart";
+
 import COLORS from "../../constants/Colors";
 
 const ProductsDetailScreen = (props) => {
+  const dispatch = useDispatch();
   const productId = props.navigation.getParam("productId");
   const selectedProduct = useSelector((state) =>
     state.products.availableProducts.find((prod) => prod.id === productId)
@@ -21,8 +24,14 @@ const ProductsDetailScreen = (props) => {
     <ScrollView>
       <Image style={styles.image} source={{ uri: selectedProduct.imageUrl }} />
       {/* Button takes FULL width so needs to be wrapped in a view to control */}
-      <View style={styles.actions}>    
-        <Button color={COLORS.primary} title="Add to Cart" onPress={() => {}} />
+      <View style={styles.actions}>
+        <Button
+          color={COLORS.primary}
+          title="Add to Cart"
+          onPress={() => {
+            dispatch(cartActions.addToCart(selectedProduct));
+          }}
+        />
       </View>
       <Text style={styles.price}>${selectedProduct.price.toFixed(2)}</Text>
       <Text style={styles.description}>{selectedProduct.description}</Text>
@@ -30,11 +39,11 @@ const ProductsDetailScreen = (props) => {
   );
 };
 
-ProductsDetailScreen.navigationOptions = navData => {
+ProductsDetailScreen.navigationOptions = (navData) => {
   return {
-    headerTitle: navData.navigation.getParam("productTitle")
-  }
-}
+    headerTitle: navData.navigation.getParam("productTitle"),
+  };
+};
 
 const styles = StyleSheet.create({
   image: {

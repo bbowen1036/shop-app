@@ -8,13 +8,15 @@ import * as Font from "expo-font"
 import { Provider } from "react-redux";
 import { createStore, combineReducers } from "redux";
 import productsReducer from "./store/reducers/products";
+import cartReducer from "./store/reducers/cart"
 // Navigation
 import ShopNavigator from "./navigation/ShopNavigator";
 
 
 // Initialize rootRed and Store
 const rootReducer = combineReducers({
-  products: productsReducer
+  products: productsReducer,
+  cart: cartReducer
 })
 
 const store = createStore(rootReducer);

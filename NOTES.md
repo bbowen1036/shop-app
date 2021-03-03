@@ -3,6 +3,7 @@
 - git init
 - npm install --save redux react-redux react-navigation react-navigation-header-buttons
 - expo install react-native-gesture-handler react-native-reanimated
+- npm install --save @expo/vector-icons
 
 # File Structure
 - Navigation: holds navigator files
@@ -31,3 +32,13 @@
 # Components
   ## images
 - when working with a network image, need to set width and height because component cant see that in advance
+
+
+# Cart
+  In cart reducer the item key will be an object of nested CartItem Objects that are instanciated and mapped to their keys!
+
+  ex: initialState = {
+    items: {
+      4: <CartItem .....>
+    }
+  }
