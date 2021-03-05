@@ -57,6 +57,12 @@ const CartScreen = (props) => {
     </View>
   );
 };
+
+CartScreen.navigationOptions = {
+  headerTitle: "Your Cart"
+}
+
+
 const styles = StyleSheet.create({
   screen: {
     margin: 20,
@@ -83,4 +89,5 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
   },
 });
+
 export default CartScreen;

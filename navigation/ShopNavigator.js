@@ -1,34 +1,80 @@
 // React
-import { createStackNavigator } from 'react-navigation-stack';
+import React from "react";
+import { createStackNavigator } from "react-navigation-stack";
+import { createDrawerNavigator } from "react-navigation-drawer";
 import { createAppContainer } from "react-navigation";
 import { Platform } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 // Screens
 import ProductsOverviewScreen from "../screens/shop/ProductsOverviewScreen";
 import ProductDetailScreen from "../screens/shop/ProductsDetailScreen";
 import CartScreen from "../screens/shop/CartScreen";
+import OrdersScreen from "../screens/shop/OrdersScreen";
 // STYLES
 import COLORS from "../constants/Colors";
+
+const defaultNavOptions = {
+  headerStyle: {
+    backgroundColor: Platform.OS === "android" ? COLORS.primary : "",
+  },
+  headerTitleStyle: {
+    fontFamily: "open-sans-bold",
+  },
+  headerBackTitleStyle: {
+    fontFamily: "open-sans",
+  },
+  headerTintColor: Platform.OS === "android" ? "white" : COLORS.primary,
+};
 
 const ProductsNavigator = createStackNavigator(
   {
     ProductsOverview: ProductsOverviewScreen,
-    ProductDetail: ProductDetailScreen, 
-    Cart: CartScreen
+    ProductDetail: ProductDetailScreen,
+    Cart: CartScreen,
   },
   {
-    defaultNavigationOptions: {
-      headerStyle: {
-        backgroundColor: Platform.OS === "android" ?  COLORS.primary : "",
-      },
-      headerTitleStyle: {
-        fontFamily: "open-sans-bold",
-      },
-      headerBackTitleStyle: {
-        fontFamily: "open-sans",
-      },
-      headerTintColor: Platform.OS === "android" ?  "white" : COLORS.primary,
+    navigationOptions: {
+      drawerIcon: (drawerConfig) => (
+        <Ionicons
+          name={Platform.OS === "android" ? "md-cart" : "ios-cart"}
+          size={23}
+          color={drawerConfig.tintColor}
+        />
+      ),
+    },
+    defaultNavigationOptions: defaultNavOptions,
+  }
+);
+
+// Orders screen will live as a drawer navigator but it will also be part of its OWN STACK
+const OrdersNavigator = createStackNavigator(
+  {
+    Orders: OrdersScreen,
+  },
+  {
+    navigationOptions: {
+      drawerIcon: (drawerConfig) => (
+        <Ionicons
+          name={Platform.OS === "android" ? "md-list" : "ios-list"}
+          size={23}
+          color={drawerConfig.tintColor}
+        />
+      ),
+    },
+    defaultNavigationOptions: defaultNavOptions,
+  }
+);
+
+const ShopNavigator = createDrawerNavigator(
+  {
+    Products: ProductsNavigator,
+    Orders: OrdersNavigator,
+  },
+  {
+    contentOptions: {
+      activeTintColor: COLORS.primary,
     },
   }
 );
 
-export default createAppContainer(ProductsNavigator)
+export default createAppContainer(ShopNavigator);
