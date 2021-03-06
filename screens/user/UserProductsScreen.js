@@ -13,6 +13,11 @@ const UserProductsScreen = (props) => {
   const userProducts = useSelector((state) => state.products.userProducts); // an array
   const dispatch = useDispatch();
 
+  const editProductHandler = (id) => {
+    props.navigation.navigate("EditProduct", { productId: id });     // fowards id thru as a routing parameter
+  };
+
+
   return (
     <FlatList
       data={userProducts}
@@ -22,9 +27,13 @@ const UserProductsScreen = (props) => {
           image={itemData.item.imageUrl}
           title={itemData.item.title}
           price={itemData.item.price}
-          onSelect={() => {}}
+          onSelect={() => {
+            editProductHandler(itemData.item.id)
+          }}
         >
-          <Button color={COLORS.primary} title="Edit" onPress={() => {}} />
+          <Button color={COLORS.primary} title="Edit" onPress={() => {
+            editProductHandler(itemData.item.id)
+          }} />
           <Button color={COLORS.primary} title="Delete" onPress={() => {
             dispatch(deleteProduct(itemData.item.id))
           }} />
@@ -44,6 +53,17 @@ UserProductsScreen.navigationOptions = (navData) => {
           iconName={Platform.OS === "android" ? "md-menu" : "ios-menu"}
           onPress={() => {
             navData.navigation.toggleDrawer(); // This Toggles the sidedrawer
+          }}
+        />
+      </HeaderButtons>
+    ),
+    headerRight: () => (
+      <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+        <Item
+          title="Add"
+          iconName={Platform.OS === "android" ? "md-create" : "ios-create"}
+          onPress={() => {
+            navData.navigation.navigate("EditProduct"); // This Toggles the sidedrawer
           }}
         />
       </HeaderButtons>
