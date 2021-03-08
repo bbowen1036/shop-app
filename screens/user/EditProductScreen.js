@@ -1,11 +1,18 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet, ScrollView, TextInput, Platform } from "react-native";
+import React, { useState, useEffect, useCallback } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TextInput,
+  Platform
+} from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 // Redux
-import { useSelector } from "react-redux";
-// Compoents 
+import { useSelector, useDispatch } from "react-redux";
+import * as productsActions from "../../store/actions/products";
+// Compoents
 import CustomHeaderButton from "../../components/UI/HeaderButton";
-
 
 const EditProductScreen = (props) => {
   const prodId = props.navigation.getParam("productId");
@@ -13,15 +20,36 @@ const EditProductScreen = (props) => {
   const editedProduct = useSelector((state) =>
     state.products.userProducts.find((prod) => prod.id === prodId)
   );
+  const dispatch = useDispatch();
 
   const [title, setTitle] = useState(editedProduct ? editedProduct.title : "");
   const [imageUrl, setImageUrl] = useState(
     editedProduct ? editedProduct.imageUrl : ""
   );
-  const [price, setPrice] = useState("");                   // I am not allowing for price to be edited
+  const [price, setPrice] = useState(""); // I am not allowing for price to be edited
   const [description, setDescription] = useState(
     editedProduct ? editedProduct.description : ""
   ); /// bind to form fields to create controlled field
+
+  const submitHandler = useCallback(() => {
+    if (editedProduct) {
+      dispatch(
+        productsActions.updateProduct(prodId, title, description, imageUrl)
+      );
+    } else {
+      dispatch(
+        productsActions.createProduct(title, description, imageUrl, +price)
+      );
+    }
+    // To go back to previous Screen
+    props.navigation.goBack();
+  }, [dispatch, prodId, title, description, imageUrl, price]);
+
+  useEffect(() => {
+    props.navigation.setParams({
+      submit: submitHandler,
+    });
+  }, [submitHandler]);
 
   return (
     <ScrollView>
@@ -31,7 +59,7 @@ const EditProductScreen = (props) => {
           <TextInput
             style={styles.input}
             value={title}
-            onChange={(text) => setTitle(text)}
+            onChangeText={(text) => setTitle(text)}
           />
         </View>
         <View style={styles.formControl}>
@@ -39,7 +67,7 @@ const EditProductScreen = (props) => {
           <TextInput
             style={styles.input}
             value={imageUrl}
-            onChange={(imageUrl) => setImageUrl(imageUrl)}
+            onChangeText={text => setImageUrl(text)}
           />
         </View>
         {editedProduct ? null : (
@@ -48,7 +76,7 @@ const EditProductScreen = (props) => {
             <TextInput
               style={styles.input}
               value={price}
-              onChange={(text) => setPrice(text)}
+              onChangeText={(text) => setPrice(text)}
             />
           </View>
         )}
@@ -57,7 +85,7 @@ const EditProductScreen = (props) => {
           <TextInput
             style={styles.input}
             value={description}
-            onChange={(text) => setDescription(text)}
+            onChangeText={(text) => setDescription(text)}
           />
         </View>
       </View>
@@ -66,6 +94,8 @@ const EditProductScreen = (props) => {
 };
 
 EditProductScreen.navigationOptions = (navData) => {
+  const submitFn = navData.navigation.getParam("submit");
+
   return {
     headerTitle: navData.navigation.getParam("productId")
       ? "Edit Product"
@@ -75,9 +105,7 @@ EditProductScreen.navigationOptions = (navData) => {
         <Item
           title="Save"
           iconName={Platform.OS === "android" ? "md-checkmark" : "ios-checkmark"}
-          onPress={() => {  // submit. will require useState
-            
-          }}
+          onPress={submitFn}  // submit. will require useState ..useCallback .. useEffect
         />
       </HeaderButtons>
     ),
