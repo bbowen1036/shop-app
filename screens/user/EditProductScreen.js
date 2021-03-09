@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useEffect, useCallback, useReducer } from "react";
 import {
   View,
   Text,
@@ -15,6 +15,16 @@ import * as productsActions from "../../store/actions/products";
 // Compoents
 import CustomHeaderButton from "../../components/UI/HeaderButton";
 
+
+const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE"
+
+const formReducer = (state, action) => {
+  // this doesnt take props so it can go outside the component to avoid rerendering and also to avoid wrapping in useCallback
+  if (action.type === FORM_INPUT_UPDATE) {
+
+  }
+};
+
 const EditProductScreen = (props) => {
   const prodId = props.navigation.getParam("productId");
   // Find product first before initializing state to pre-populate fields
@@ -23,15 +33,31 @@ const EditProductScreen = (props) => {
   );
   const dispatch = useDispatch();
 
-  const [title, setTitle] = useState(editedProduct ? editedProduct.title : "");
-  const [imageUrl, setImageUrl] = useState(
-    editedProduct ? editedProduct.imageUrl : ""
-  );
-  const [price, setPrice] = useState(""); // I am not allowing for price to be edited
-  const [description, setDescription] = useState(
-    editedProduct ? editedProduct.description : ""
-  ); /// bind to form fields to create controlled field
-  const [titleIsValid, setTitleIsValid] = useState(false);
+  const [ formState, dispatchFormState ] = useReducer(formReducer, {
+    inputValues: {
+      title: editedProduct ? editedProduct.title : "",
+      imageUrl: editedProduct ? editedProduct.imageUrl : "",
+      description: editedProduct ? editedProduct.description : "",
+      price: ""
+    },
+    imputValidities: {
+      title: editedProduct ? true : false,
+      imageUrl: editedProduct ? true : false,
+      description: editedProduct ? true : false,
+      price: editedProduct ? true : false,
+    },
+    formIsValid: editedProduct ? true : false,
+  });
+
+  // const [title, setTitle] = useState(editedProduct ? editedProduct.title : "");
+  // const [imageUrl, setImageUrl] = useState(
+  //   editedProduct ? editedProduct.imageUrl : ""
+  // );
+  // const [price, setPrice] = useState(""); // I am not allowing for price to be edited
+  // const [description, setDescription] = useState(
+  //   editedProduct ? editedProduct.description : ""
+  // ); /// bind to form fields to create controlled field
+  // const [titleIsValid, setTitleIsValid] = useState(false);
 
   const submitHandler = useCallback(() => {
     if (!titleIsValid) {
@@ -51,7 +77,7 @@ const EditProductScreen = (props) => {
     }
     // To go back to previous Screen
     props.navigation.goBack();
-  }, [dispatch, prodId, title, description, imageUrl, price]);
+  }, [dispatch, prodId, title, description, imageUrl, price, titleIsValid]);
 
   useEffect(() => {
     props.navigation.setParams({
@@ -61,13 +87,16 @@ const EditProductScreen = (props) => {
 
   const titleChangeHandler = (text) => {
     // with basic validation to make sure field is not empty
-    if (text.trim().length === 0) {
-      setTitleIsValid(false);
-    } else {
-      setTitleIsValid(true);
+    let isValid = false;
+    if (text.trim().length > 0) {
+      isValid = true;
     }
-
-    setTitle(text);
+    dispatchFormState({
+      type: FORM_INPUT_UPDATE,
+      value: text,
+      isValid: isValid,
+      input: "title"
+    });
   };
 
   return (

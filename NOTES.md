@@ -42,3 +42,10 @@
       4: <CartItem .....>
     }
   }
+
+
+
+# useReducer 
+ to manage form state. Has nothing to do with redux
+ helps with state management when we have connected or more complex state.
+ it returns an array with 2 element: formState (a state snapshot), and a dispatch function
