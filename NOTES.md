@@ -49,3 +49,14 @@
  to manage form state. Has nothing to do with redux
  helps with state management when we have connected or more complex state.
  it returns an array with 2 element: formState (a state snapshot), and a dispatch function
+
+
+ # firebase
+ npm install redux-thunk
+
+ in APP.js
+ import { applyMiddleware } from "redux";
+ import ReduxThunk from "redux-thunk";
+const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
+
+  a redux middleware that allows us to change our redux action creaters to allow for async stuff and side effects
