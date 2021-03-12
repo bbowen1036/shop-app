@@ -59,8 +59,8 @@ const Input = (props) => {
   };
 
   const lostFocusedHandler = () => {
-    dispatch({type: INPUT_BLUR})
-  }
+    dispatch({ type: INPUT_BLUR });
+  };
 
   return (
     <View style={styles.formControl}>
@@ -72,7 +72,11 @@ const Input = (props) => {
         onChangeText={textChangeHandler}
         onBlur={lostFocusedHandler}
       />
-      {!inputState.isValid && <Text>{props.errorText}</Text>}
+      {!inputState.isValid && inputState.touched && (
+        <View style={styles.errorContainer}>
+          <Text style={styles.errorText}>{props.errorText}</Text>
+        </View>
+      )}
     </View>
   );
 };
@@ -91,6 +95,14 @@ const styles = StyleSheet.create({
     borderBottomColor: "#ccc",
     borderBottomWidth: 1,
   },
+  errorContainer: {
+    marginVertical: 5,
+  },
+  errorText: {
+    fontFamily: "open-sans",
+    color: "red",
+    fontSize: 13
+  }
 });
 
 
