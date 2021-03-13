@@ -60,3 +60,8 @@
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 
   a redux middleware that allows us to change our redux action creaters to allow for async stuff and side effects
+
+
+
+ PUT - will completely overwrite data with updated data
+ PATCH - will only overwrite fields it is given
