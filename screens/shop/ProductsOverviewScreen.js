@@ -1,6 +1,6 @@
 // React
-import React, { useEffect } from "react";
-import { StyleSheet, FlatList, Platform, Button } from "react-native";
+import React, { useEffect, useState, useCallback } from "react";
+import { StyleSheet, FlatList, Platform, Button, ActivityIndicator, View , Text} from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 // Redux
 import { useSelector, useDispatch } from "react-redux";
@@ -12,18 +12,58 @@ import ProductItem from "../../components/shop/ProductItem";
 import CustomHeaderButton from "../../components/UI/HeaderButton";
 
 const ProductsOverviewScreen = (props) => {
+  const [ isLoading, setIsLoading ] = useState(false);
+  const [ error, setError ] = useState()
   const products = useSelector((state) => state.products.availableProducts);
   const dispatch = useDispatch();
 
+
+  const loadProducts = useCallback(async () => {
+    setError(null);
+    setIsLoading(true);
+    try {
+      await dispatch(productActions.fetchProducts())
+    } catch (err) {
+      setError(err.message);
+    }
+    setIsLoading(false)
+  }, [dispatch, setIsLoading, setError]);
+
   useEffect(() => {
-    dispatch(productActions.fetchProducts())
-  }, [dispatch]);
+    loadProducts();
+  }, [dispatch, loadProducts]);
 
   const selectItemHandler = (id, title) => {
     props.navigation.navigate("ProductDetail", {
       productId: id,
       productTitle: title,
     });
+  };
+
+  if (error) {
+    return (
+      <View style={styles.centered}>
+        <Text>An error occurred!</Text>
+        <Button title="Try Again" onPress={loadProducts} color={COLORS.primary} />
+      </View>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <View style={styles.centered}>
+        <ActivityIndicator size="large" color={COLORS.primary} />
+      </View>
+    );
+  }
+
+  if (!isLoading && products.length === 0) {
+    // To enhance user experience by fowarding them to another screen when no products are loaded
+    return (
+      <View style={styles.centered}>
+        <Text>No products found. Maybe start adding some!</Text>
+      </View>
+    );
   }
 
   return (
@@ -87,6 +127,8 @@ ProductsOverviewScreen.navigationOptions = (navData) => {
   };
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  centered: { flex: 1, justifyContent: "center", alignItems: "center" },
+});
 
 export default ProductsOverviewScreen;
