@@ -76,5 +76,6 @@ const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
  # Linear gradient
   npm install expo-linear-gradient
   allows to install and set linear gradient color with ease
-  requires color prop with at least 2 colors
+  requires colors prop with at least 2 colors
   ex: colors={["#ffedff", "#ffe3ff"]}
+  
