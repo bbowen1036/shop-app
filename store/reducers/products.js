@@ -9,8 +9,8 @@ import {
 import Product from "../../models/product";
 
 const initialState = {
-  availableProducts: PRODUCTS, // all products that we didnt create
-  userProducts: PRODUCTS.filter((prod) => prod.ownerId === "u1"), // products that user  creates
+  availableProducts: [], // all products that we didnt create
+  userProducts: [], // products that user  creates
 };
 
 export default (state = initialState, action) => {
@@ -18,13 +18,13 @@ export default (state = initialState, action) => {
     case SET_PRODUCTS:
       return {
         availableProducts: action.products,
-        userProducts: action.products.filter((prod) => prod.ownerId === "u1"),
+        userProducts: action.userProducts,
       }
     case CREATE_PRODUCT:
-      const { title, imageUrl, description, price, id } = action.productData;
+      const { title, imageUrl, description, price, id, ownerId } = action.productData;
       const newProduct = new Product(
         id,
-        "u1",
+        ownerId,
         title,
         imageUrl,
         description,
