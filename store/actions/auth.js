@@ -1,6 +1,7 @@
 import FBAPI from "../../config/keys";
 
 export const SIGNUP = "SIGNUP";
+export const LOGIN = "LOGIN";
 
 export const signup = (email, password) => {
   return async (dispatch) => {
@@ -18,12 +19,24 @@ export const signup = (email, password) => {
         }),
       }
     );
-    
-    if (!response.ok) {
-      throw new Error("Something went wrong!")
-    }
 
-    const resData = await response.json();   // takes response and transforms it from json to js object
+    if (!response.ok) {
+      const errorResData = await response.json();
+      const errorId = errorResData.error.message;
+
+      let message;
+      switch (errorId) {
+        case "EMAIL_EXISTS":
+          message = "This email has already been taken!";
+          break;
+        default:
+          message = "Something went wrong!";
+          break;
+      }
+
+      throw new Error(message);
+    }
+    const resData = await response.json(); // takes response and transforms it from json to js object
     /*  
     SAMPLE RESPONSE FROM FB AUTH ENDPOINT
     {
@@ -33,8 +46,49 @@ export const signup = (email, password) => {
       "expiresIn": "3600",
       "localId": "tRcfmLH7..."
     } */
+    dispatch({ type: SIGNUP, token: resData.idToken, userId: resData.localId });
+  };
+};
 
+
+export const login = (email, password) => {
+  return async (dispatch) => {
+    const response = await fetch(
+      `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${FBAPI.firebaseAPIKey}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password,
+          returnSecureToken: true,
+        }),
+      }
+    );
     
-    dispatch({ type: SIGNUP });
+    if (!response.ok) {
+      const errorResData = await response.json();
+      const errorId = errorResData.error.message;
+
+      let message;
+      switch (errorId) {
+        case "EMAIL_NOT_FOUND":
+          message = "This email could not be found!";
+          break
+        case "INVALID_PASSWORD":
+          message = "Password or Email is not valid!";
+          break
+        default:
+          message = "Something went wrong!";
+          break
+      }
+
+      throw new Error(message);
+    }
+
+    const resData = await response.json();   // takes response and transforms it from json to js object
+    dispatch({ type: LOGIN, token: resData.idToken, userId: resData.localId  });
   };
 };
