@@ -78,4 +78,4 @@ const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
   allows to install and set linear gradient color with ease
   requires colors prop with at least 2 colors
   ex: colors={["#ffedff", "#ffe3ff"]}
-  
+  this is a component so dimensions need to be set relative to screen
