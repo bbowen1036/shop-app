@@ -13,7 +13,7 @@ import OrdersScreen from "../screens/shop/OrdersScreen";
 import UserProductsScreen from "../screens/user/UserProductsScreen";
 import EditProductScreen from "../screens/user/EditProductScreen";
 import AuthScreen from "../screens/user/AuthScreen";
-// STYLES
+// Styles
 import COLORS from "../constants/Colors";
 
 const defaultNavOptions = {
