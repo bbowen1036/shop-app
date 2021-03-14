@@ -65,3 +65,9 @@ const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 
  PUT - will completely overwrite data with updated data
  PATCH - will only overwrite fields it is given
+
+
+ # Pull to refresh
+ requires 2 props
+ - onRefresh : needs to point to a function (we have one in loadingProducts)
+ - refreshing: this is how react knows when loading is finished so it need to point to a stateful variable > isLoading

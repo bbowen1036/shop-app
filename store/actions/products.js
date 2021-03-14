@@ -8,21 +8,21 @@ export const SET_PRODUCTS = "SET_PRODUCTS";
 export const fetchProducts = () => {
   return async (dispatch) => {
     // any async code you want
-    try {   
+    try {
       const response = await fetch(
         "https://shop-app-bb69d-default-rtdb.firebaseio.com/products.json",
         {
           method: "GET",
         }
       );
-  
+
       if (!response.ok) {
-        throw new Error("Something went wrong!")
+        throw new Error("Something went wrong!");
       }
 
       const resData = await response.json(); // sends back obj * needs to be mapped to array
       const loadedProducts = [];
-  
+
       for (const key in resData) {
         loadedProducts.push(
           new Product(
@@ -35,7 +35,7 @@ export const fetchProducts = () => {
           )
         );
       }
-  
+
       dispatch({ type: SET_PRODUCTS, products: loadedProducts });
     } catch (err) {
       // send to custom analytics server

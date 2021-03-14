@@ -1,4 +1,41 @@
+import Order from "../../models/order";
+
 export const ADD_ORDER = "ADD_ORDER";
+export const SET_ORDERS = "SET_ORDERS";
+
+export const fetchOrders = () => {
+  return async (dispatch) => {
+    try {
+      const response = await fetch(
+        "https://shop-app-bb69d-default-rtdb.firebaseio.com/orders/u1.json",
+        {
+          method: "GET",
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Something went wrong!");
+      }
+
+      const resData = await response.json(); // sends back obj * needs to be mapped to array
+      const loadedOrders = [];
+
+      for (const key in resData) {
+        loadedOrders.push(
+          new Order(
+            key,
+            resData[key].cartItems,
+            resData[key].totalAmount,
+            new Date(resData[key].date)
+          )
+        );
+      }
+      dispatch({ type: SET_ORDERS, orders: loadedOrders });
+    } catch (error) {
+      throw error;
+    }
+  };
+};
 
 export const addOrder = (cartItems, totalAmount) => {
   const date = new Date();
