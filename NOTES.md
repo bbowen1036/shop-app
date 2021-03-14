@@ -71,3 +71,10 @@ const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
  requires 2 props
  - onRefresh : needs to point to a function (we have one in loadingProducts)
  - refreshing: this is how react knows when loading is finished so it need to point to a stateful variable > isLoading
+
+
+ # Linear gradient
+  npm install expo-linear-gradient
+  allows to install and set linear gradient color with ease
+  requires color prop with at least 2 colors
+  ex: colors={["#ffedff", "#ffe3ff"]}
