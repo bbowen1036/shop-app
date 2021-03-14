@@ -84,7 +84,7 @@ export const createProduct = (title, description, imageUrl, price) => {
     );
 
     const resData = await response.json(); // response data sent from FireBase
-
+      // console.log(resData)
     dispatch({
       type: CREATE_PRODUCT,
       productData: { id: resData.name, title, description, imageUrl, price },
