@@ -5,7 +5,8 @@ import FBAPI from "../../config/keys";
 
 // export const SIGNUP = "SIGNUP";
 // export const LOGIN = "LOGIN";
-export const AUTHENTICATE = "AUTHENTICATE";   
+export const AUTHENTICATE = "AUTHENTICATE"; 
+export const LOGOUT = "LOGOUT";
 
 export const authenticate = (userId, token) => {  
   // for when users session token is still valid. Dont want to send a request to DB only update redux state
@@ -111,6 +112,10 @@ export const login = (email, password) => {
     saveDataToStorage(resData.idToken, resData.localId, expirationDate);
   };
 };
+
+export const logout = () => {
+  return { type: LOGOUT }
+}
 
 const saveDataToStorage = (token, userId, expirationDate) => {
   AsyncStorage.setItem(
