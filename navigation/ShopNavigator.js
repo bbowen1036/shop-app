@@ -5,6 +5,7 @@ import { createDrawerNavigator, DrawerItems, DrawerNavigatorItems } from "react-
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
 import { Platform, SafeAreaView, Button, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+
 // Redux 
 import { useDispatch } from "react-redux";
 import * as authActions from "../store/actions/auth";

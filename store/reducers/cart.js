@@ -6,6 +6,7 @@ import CartItem from "../../models/cart-item";
 const initialState = {
   items: {},
   totalAmount: 0,
+  cartCount: 0
 };
 
 export default (state = initialState, action) => {
@@ -38,6 +39,7 @@ export default (state = initialState, action) => {
         ...state,
         items: { ...state.items, [addedProduct.id]: updatedOrNewCartItem },
         totalAmount: state.totalAmount + productPrice,
+        cartCount: state.cartCount + 1
       };
 
     case REMOVE_FROM_CART: // 2 cases: item has  quantity of 1 so remove item entirely (so CartItem doesnt get rendered) || item has quantity >= 2 so we just reduce quantity by 1
@@ -64,6 +66,7 @@ export default (state = initialState, action) => {
         ...state,
         items: updatedCartItems,
         totalAmount: newTotal > 0 ? newTotal : 0,
+        cartCount: state.cartCount - 1
       };
 
     case ADD_ORDER: 

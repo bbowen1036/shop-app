@@ -8,14 +8,19 @@ import * as cartActions from "../../store/actions/cart";
 import * as productActions from "../../store/actions/products";
 // Components
 import COLORS from "../../constants/Colors";
+import { Badge } from "react-native-elements";
 import ProductItem from "../../components/shop/ProductItem";
 import CustomHeaderButton from "../../components/UI/HeaderButton";
+import { log } from "react-native-reanimated";
 
 const ProductsOverviewScreen = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState();
   const products = useSelector((state) => state.products.availableProducts);
+  const cartCount = useSelector(state => state.cart.cartCount); 
+
+  // console.log(cartCount)
   const dispatch = useDispatch();
 
   const loadProducts = useCallback(async () => {
@@ -45,6 +50,12 @@ const ProductsOverviewScreen = (props) => {
     });
   }, [dispatch, loadProducts]);
 
+  useEffect(() => {
+    props.navigation.setParams({
+      cartLen: cartCount
+    });
+  }, [cartCount, dispatch]);
+ 
   const selectItemHandler = (id, title) => {
     props.navigation.navigate("ProductDetail", {
       productId: id,
@@ -106,7 +117,7 @@ const ProductsOverviewScreen = (props) => {
           />
           <Button
             color={COLORS.primary}
-            title="To Cart"
+            title="Add To Cart"
             onPress={() => {
               dispatch(cartActions.addToCart(itemData.item));
             }}
@@ -118,6 +129,8 @@ const ProductsOverviewScreen = (props) => {
 };
 
 ProductsOverviewScreen.navigationOptions = (navData) => {
+  const orderLen = navData.navigation.getParam("cartLen");
+
   return {
     headerTitle: "All Products",
     headerLeft: () => (
@@ -140,6 +153,13 @@ ProductsOverviewScreen.navigationOptions = (navData) => {
             navData.navigation.navigate("Cart");
           }}
         />
+        {orderLen ? (
+          <Badge
+            value={orderLen}
+            status="success"
+            containerStyle={{ position: "absolute", top: -4, right: -0 }}
+          />
+        ) : null}
       </HeaderButtons>
     ),
   };
