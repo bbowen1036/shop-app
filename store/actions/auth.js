@@ -1,7 +1,20 @@
+// React
+import AsyncStorage from "@react-native-community/async-storage";
+// Keys
 import FBAPI from "../../config/keys";
 
-export const SIGNUP = "SIGNUP";
-export const LOGIN = "LOGIN";
+// export const SIGNUP = "SIGNUP";
+// export const LOGIN = "LOGIN";
+export const AUTHENTICATE = "AUTHENTICATE";   
+
+export const authenticate = (userId, token) => {  
+  // for when users session token is still valid. Dont want to send a request to DB only update redux state
+  return {
+    type: AUTHENTICATE,
+    userId,
+    token
+  }
+}
 
 export const signup = (email, password) => {
   return async (dispatch) => {
@@ -46,7 +59,11 @@ export const signup = (email, password) => {
       "expiresIn": "3600",
       "localId": "tRcfmLH7..."
     } */
-    dispatch({ type: SIGNUP, token: resData.idToken, userId: resData.localId });
+    dispatch(authenticate(resData.localId, resData.idToken));
+    const expirationDate = new Date(
+      new Date().getTime() + parseInt(resData.expiresIn) * 1000
+    );
+    saveDataToStorage(resData.idToken, resData.localId, expirationDate);
   };
 };
 
@@ -67,7 +84,7 @@ export const login = (email, password) => {
         }),
       }
     );
-    
+
     if (!response.ok) {
       const errorResData = await response.json();
       const errorId = errorResData.error.message;
@@ -76,19 +93,32 @@ export const login = (email, password) => {
       switch (errorId) {
         case "EMAIL_NOT_FOUND":
           message = "This email could not be found!";
-          break
+          break;
         case "INVALID_PASSWORD":
           message = "Password or Email is not valid!";
-          break
+          break;
         default:
           message = "Something went wrong!";
-          break
+          break;
       }
 
       throw new Error(message);
     }
 
-    const resData = await response.json();   // takes response and transforms it from json to js object
-    dispatch({ type: LOGIN, token: resData.idToken, userId: resData.localId  });
+    const resData = await response.json(); // takes response and transforms it from json to js object
+    dispatch(authenticate(resData.localId, resData.idToken));
+    const expirationDate = new Date(new Date().getTime() + parseInt(resData.expiresIn) * 1000);
+    saveDataToStorage(resData.idToken, resData.localId, expirationDate);
   };
+};
+
+const saveDataToStorage = (token, userId, expirationDate) => {
+  AsyncStorage.setItem(
+    "userData",
+    JSON.stringify({
+      token: token,
+      userId: userId,
+      expiryDate: expirationDate.toISOString()
+    })
+  );
 };

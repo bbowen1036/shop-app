@@ -79,3 +79,10 @@ const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
   requires colors prop with at least 2 colors
   ex: colors={["#ffedff", "#ffe3ff"]}
   this is a component so dimensions need to be set relative to screen
+
+
+  # storing session token locally on device 
+  - so session can persist
+  npm install --save @react-native-community/async-storage
+  import AsyncStorage from "@react-native-community/async-storage";
+  uses a key: value storage

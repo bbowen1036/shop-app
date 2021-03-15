@@ -8,6 +8,7 @@ import {
   Button,
   ActivityIndicator,
   Alert,
+  ImageBackground,
 } from "react-native";
 // Redux
 import { useDispatch } from "react-redux";
@@ -18,7 +19,6 @@ import Input from "../../components/UI/Input";
 import Card from "../../components/UI/Card";
 import Colors from "../../constants/Colors";
 
-
 const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
 
 const formReducer = (state, action) => {
@@ -26,31 +26,30 @@ const formReducer = (state, action) => {
   if (action.type === FORM_INPUT_UPDATE) {
     const updatedValues = {
       ...state.inputValues,
-      [action.input]: action.value
+      [action.input]: action.value,
     };
     const updatedValidities = {
       ...state.inputValidities,
-      [action.input]: action.isValid
+      [action.input]: action.isValid,
     };
 
     let updatedFormIsValid = true;
     for (const key in updatedValidities) {
-      updatedFormIsValid = updatedFormIsValid && updatedValidities[key];  // *** If one formValidity is false it will overwrite Truthiness
+      updatedFormIsValid = updatedFormIsValid && updatedValidities[key]; // *** If one formValidity is false it will overwrite Truthiness
     }
 
     return {
       formIsValid: updatedFormIsValid,
       inputValidities: updatedValidities,
-      inputValues: updatedValues
+      inputValues: updatedValues,
     };
   }
   return state;
 };
 
-
 const AuthScreen = (props) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [ isSignup, setIsSignup ] = useState(false);
+  const [isSignup, setIsSignup] = useState(false);
   const [error, setError] = useState();
   const dispatch = useDispatch();
 
@@ -89,8 +88,8 @@ const AuthScreen = (props) => {
     setIsLoading(true);
     setError(null); // to clear previous error
     try {
-      await dispatch(action);  // if dispatch makes it past this line (in try block), action was successfull
-      props.navigation.navigate("Shop")
+      await dispatch(action); // if dispatch makes it past this line (in try block), action was successfull
+      props.navigation.navigate("Shop");
     } catch (err) {
       setError(err.message);
       setIsLoading(false);
@@ -109,13 +108,15 @@ const AuthScreen = (props) => {
     [dispatchFormState]
   );
 
+  const image = { uri: "https://oceanstar-seed.s3-us-west-1.amazonaws.com/citrus.jpg"}
   return (
     <KeyboardAvoidingView
       behavior="padding"
       keyboardVerticalOffset={50}
       style={styles.screen}
     >
-      <LinearGradient colors={["#ffedff", "#ffe3ff"]} style={styles.gradient}>
+      {/* <LinearGradient colors={["#ffedff", "#ffe3ff"]} style={styles.gradient}> */}
+      <ImageBackground source={image} style={styles.image}>
         <Card style={styles.authContainer}>
           <ScrollView>
             <Input
@@ -142,24 +143,29 @@ const AuthScreen = (props) => {
               initialValue=""
             />
             <View style={styles.buttonContainer}>
-              {isLoading ? <ActivityIndicator size="small" color={Colors.primary} /> : <Button
-                title={isSignup ? "Sign Up" : "Login"}
-                color={Colors.primary}
-                onPress={authHandler}
-              />}
+              {isLoading ? (
+                <ActivityIndicator size="small" color={Colors.primary} />
+              ) : (
+                <Button
+                  title={isSignup ? "Sign Up" : "Login"}
+                  color={Colors.primary}
+                  onPress={authHandler}
+                />
+              )}
             </View>
             <View style={styles.buttonContainer}>
               <Button
-                title={`Switch to ${isSignup ? 'Login' : 'Sign Up'}`}
+                title={`Switch to ${isSignup ? "Login" : "Sign Up"}`}
                 color={Colors.accent}
                 onPress={() => {
-                  setIsSignup(prevState => !prevState)
+                  setIsSignup((prevState) => !prevState);
                 }}
               />
             </View>
           </ScrollView>
         </Card>
-      </LinearGradient>
+        </ImageBackground>
+      {/* </LinearGradient> */}
     </KeyboardAvoidingView>
   );
 };
@@ -182,9 +188,17 @@ const styles = StyleSheet.create({
     maxWidth: 400,
     maxHeight: 400,
     padding: 20,
+
   },
   buttonContainer: {
     marginTop: 10,
+  },
+  image: {
+    flex:1,
+  //  height: "100%",
+  //  width: "100%",
+   justifyContent: "center",
+   alignItems: "center"
   }
 });
 

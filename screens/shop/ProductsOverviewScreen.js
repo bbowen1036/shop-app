@@ -12,18 +12,17 @@ import ProductItem from "../../components/shop/ProductItem";
 import CustomHeaderButton from "../../components/UI/HeaderButton";
 
 const ProductsOverviewScreen = (props) => {
-  const [ isLoading, setIsLoading ] = useState(false);
-  const [ isRefreshing, setIsRefreshing ] = useState(false);
-  const [ error, setError ] = useState()
+  const [isLoading, setIsLoading] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [error, setError] = useState();
   const products = useSelector((state) => state.products.availableProducts);
   const dispatch = useDispatch();
 
-
   const loadProducts = useCallback(async () => {
     setError(null);
-    setIsRefreshing(true)
+    setIsRefreshing(true);
     try {
-      await dispatch(productActions.fetchProducts())
+      await dispatch(productActions.fetchProducts());
     } catch (err) {
       setError(err.message);
     }
@@ -31,20 +30,19 @@ const ProductsOverviewScreen = (props) => {
   }, [dispatch, setIsLoading, setError]);
 
   // Navigation listener
-  useEffect(() => { 
+  useEffect(() => {
     const willFocusSub = props.navigation.addListener("didFocus", loadProducts);
 
     return () => {
       willFocusSub.remove();
-    }
+    };
   }, [loadProducts]);
 
   useEffect(() => {
     setIsLoading(true);
-    loadProducts()
-      .then(() => {
-        setIsLoading(false)
-      })
+    loadProducts().then(() => {
+      setIsLoading(false);
+    });
   }, [dispatch, loadProducts]);
 
   const selectItemHandler = (id, title) => {
@@ -58,7 +56,11 @@ const ProductsOverviewScreen = (props) => {
     return (
       <View style={styles.centered}>
         <Text>An error occurred!</Text>
-        <Button title="Try Again" onPress={loadProducts} color={COLORS.primary} />
+        <Button
+          title="Try Again"
+          onPress={loadProducts}
+          color={COLORS.primary}
+        />
       </View>
     );
   }
@@ -82,8 +84,8 @@ const ProductsOverviewScreen = (props) => {
 
   return (
     <FlatList
-      onRefresh={loadProducts}     // Pull to refresh
-      refreshing={isRefreshing}  // required, so react knows when loading is done
+      onRefresh={loadProducts} // Pull to refresh
+      refreshing={isRefreshing} // required, so react knows when loading is done
       data={products}
       keyExtractor={(item) => item.id}
       renderItem={(itemData) => (
@@ -124,7 +126,7 @@ ProductsOverviewScreen.navigationOptions = (navData) => {
           title="Menu"
           iconName={Platform.OS === "android" ? "md-menu" : "ios-menu"}
           onPress={() => {
-            navData.navigation.toggleDrawer();   // This Toggles the sidedrawer
+            navData.navigation.toggleDrawer(); // This Toggles the sidedrawer
           }}
         />
       </HeaderButtons>
@@ -135,7 +137,7 @@ ProductsOverviewScreen.navigationOptions = (navData) => {
           title="Cart"
           iconName={Platform.OS === "android" ? "md-cart" : "ios-cart"}
           onPress={() => {
-            navData.navigation.navigate("Cart")
+            navData.navigation.navigate("Cart");
           }}
         />
       </HeaderButtons>
