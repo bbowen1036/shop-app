@@ -8,14 +8,19 @@ import FBAPI from "../../config/keys";
 export const AUTHENTICATE = "AUTHENTICATE"; 
 export const LOGOUT = "LOGOUT";
 
-export const authenticate = (userId, token) => {  
+let timer;
+
+export const authenticate = (userId, token, expiryTime) => {
   // for when users session token is still valid. Dont want to send a request to DB only update redux state
-  return {
-    type: AUTHENTICATE,
-    userId,
-    token
-  }
-}
+  return (dispatch) => {
+    dispatch(setLogoutTimer(expiryTime));
+    dispatch({
+      type: AUTHENTICATE,
+      userId,
+      token,
+    });
+  };
+};
 
 export const signup = (email, password) => {
   return async (dispatch) => {
@@ -60,7 +65,13 @@ export const signup = (email, password) => {
       "expiresIn": "3600",
       "localId": "tRcfmLH7..."
     } */
-    dispatch(authenticate(resData.localId, resData.idToken));
+    dispatch(
+      authenticate(
+        resData.localId,
+        resData.idToken,
+        parseInt(resData.expiresIn) * 1000
+      )
+    );
     const expirationDate = new Date(
       new Date().getTime() + parseInt(resData.expiresIn) * 1000
     );
@@ -107,15 +118,39 @@ export const login = (email, password) => {
     }
 
     const resData = await response.json(); // takes response and transforms it from json to js object
-    dispatch(authenticate(resData.localId, resData.idToken));
-    const expirationDate = new Date(new Date().getTime() + parseInt(resData.expiresIn) * 1000);
+    dispatch(
+      authenticate(
+        resData.localId,
+        resData.idToken,
+        parseInt(resData.expiresIn) * 1000
+      )
+    );
+    const expirationDate = new Date(
+      new Date().getTime() + parseInt(resData.expiresIn) * 1000
+    );
     saveDataToStorage(resData.idToken, resData.localId, expirationDate);
   };
 };
 
 export const logout = () => {
-  return { type: LOGOUT }
+  clearLogoutTimer();
+  AsyncStorage.removeItem("userData");
+  return { type: LOGOUT };
+};
+
+const clearLogoutTimer = () => {
+  if (timer) {
+    clearTimeout(timer);
+  }
 }
+
+const setLogoutTimer = (expirationTime) => {
+  return (dispatch) => {
+    timer = setTimeout(() => {
+      dispatch(logout());
+    }, expirationTime);
+  };
+};
 
 const saveDataToStorage = (token, userId, expirationDate) => {
   AsyncStorage.setItem(

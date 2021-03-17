@@ -1,10 +1,11 @@
 // React
 import React from "react";
 import { createStackNavigator } from "react-navigation-stack";
-import { createDrawerNavigator, DrawerItems, DrawerNavigatorItems } from "react-navigation-drawer";
+import { createDrawerNavigator, DrawerItems } from "react-navigation-drawer";
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
 import { Platform, SafeAreaView, Button, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { createBottomTabNavigator } from "react-navigation-tabs";
 
 // Redux 
 import { useDispatch } from "react-redux";
@@ -18,6 +19,7 @@ import UserProductsScreen from "../screens/user/UserProductsScreen";
 import EditProductScreen from "../screens/user/EditProductScreen";
 import AuthScreen from "../screens/user/AuthScreen";
 import StartupScreen from "../screens/StartupScreen";
+import OnboardScreen1 from "../screens/onboard/OnboardScreen1";
 // Styles
 import COLORS from "../constants/Colors";
 
@@ -114,8 +116,8 @@ const ShopNavigator = createDrawerNavigator(
                 title="Logout"
                 color={COLORS.primary}
                 onPress={() => {
-                  dispatch(authActions.logout);
-                  props.navigation.navigate("Auth");
+                  dispatch(authActions.logout());
+                  // props.navigation.navigate("Auth");
                 }}
               />
             </View>
@@ -126,14 +128,20 @@ const ShopNavigator = createDrawerNavigator(
   }
 );
 
+const OnboardingNavigator = createBottomTabNavigator({
+  Screen1: OnboardScreen1,
+})
+
+
 const AuthNavigator = createStackNavigator({
-  Auth: AuthScreen
+  Auth: AuthScreen,
 }, {
   defaultNavigationOptions: defaultNavOptions,
 });
 
 const MainNavigator = createSwitchNavigator({
   Startup: StartupScreen,
+  Onboard: OnboardingNavigator,
   Auth: AuthNavigator,
   Shop: ShopNavigator
 });
