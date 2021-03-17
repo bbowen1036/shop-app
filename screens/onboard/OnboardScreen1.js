@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
 
 OnboardScreen1.navigationOptions = (navData) => {
   return {
-    tabBarVisible: false,      // removes bottom tab
+    tabBarVisible: false,      
   };
 };
 
