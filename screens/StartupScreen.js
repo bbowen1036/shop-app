@@ -16,7 +16,7 @@ const StartupScreen = props => {
     const tryLogin = async () => {
       const userData = await AsyncStorage.getItem("userData");
       if (!userData) {
-        props.navigation.navigate("Auth")
+        props.navigation.navigate("Onboard")
         return
       }
       const transformedData = JSON.parse(userData);
@@ -24,7 +24,7 @@ const StartupScreen = props => {
       const expirationDate = new Date(expiryDate);
 
       if (expirationDate < new Date() || !token || !userId) {     // if token has expired.. ie if it is less than current time
-        props.navigation.navigate("Auth")
+        props.navigation.navigate("Onboard")
         return
       } 
 

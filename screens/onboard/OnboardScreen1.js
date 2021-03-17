@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
 
 OnboardScreen1.navigationOptions = navData => {
   return {
-    headerTitle: "Welcome!"
+    tabBarVisible: false
   }
 }
 
