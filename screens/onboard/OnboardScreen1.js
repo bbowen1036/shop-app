@@ -1,10 +1,14 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Button } from "react-native";
+
+// Constants
+import COLORS from "../../constants/Colors";
 
 const OnboardScreen1 = props => {
   return (
     <View style={styles.screen}>
       <Text>This is the Onboard screen # 1</Text>
+      <Button color={COLORS.primary} title="Next"  />
     </View>
   )
 }
