@@ -12,7 +12,7 @@ const NavigationContainer = (props) => {
   useEffect(() => {
     if (!isAuth) {
       navRef.current.dispatch(
-        NavigationActions.navigate({ routeName: "Onboard" })   //  changed from { routeName: "Auth" }
+        NavigationActions.navigate({ routeName: "Onboard" })   /  changed from { routeName: "Auth" }
       );
     }
   }, [isAuth]);
