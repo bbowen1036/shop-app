@@ -34,13 +34,9 @@ const OnboardScreen2 = (props) => {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    // justifyContent: "center",
-    // alignItems: "center",
     backgroundColor: "#ffa5a7"
   },
   image: {
-    // height: "100%",
-    // width: "100%",
      justifyContent: "center",
     alignItems: "center",
   },
