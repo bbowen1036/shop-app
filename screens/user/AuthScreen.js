@@ -171,7 +171,7 @@ const AuthScreen = (props) => {
 };
 
 AuthScreen.navigationOptions = {
-  headerTitle: "Farm Fresh",
+  headerTitle: "MARKT",
 };
 
 const styles = StyleSheet.create({

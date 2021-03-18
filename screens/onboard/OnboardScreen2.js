@@ -10,7 +10,7 @@ import {
 const OnboardScreen2 = (props) => {
   const buttonHandler = () => {
     console.log("clsa");
-    props.navigation.navigate("Auth");
+    props.navigation.navigate("Screen3");
   };
 
   const image = {

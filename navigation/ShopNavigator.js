@@ -21,6 +21,7 @@ import AuthScreen from "../screens/user/AuthScreen";
 import StartupScreen from "../screens/StartupScreen";
 import OnboardScreen1 from "../screens/onboard/OnboardScreen1";
 import OnboardScreen2 from "../screens/onboard/OnboardScreen2";
+import OnboardScreen3 from "../screens/onboard/OnboardScreen3";
 // Styles
 import COLORS from "../constants/Colors";
 
@@ -131,7 +132,8 @@ const ShopNavigator = createDrawerNavigator(
 
 const OnboardingNavigator = createBottomTabNavigator({
   Screen1: OnboardScreen1,
-  Screen2: OnboardScreen2
+  Screen2: OnboardScreen2,
+  Screen3: OnboardScreen3
 })
 
 
