@@ -1,15 +1,15 @@
 import React from "react";
-import { View, TouchableOpacity, StyleSheet, Button, ImageBackground, Text  } from "react-native";
-import { HeaderButtons, Item } from "react-navigation-header-buttons";
-import CustomHeaderButton from "../../components/UI/HeaderButton";
-
-// Constants
-import COLORS from "../../constants/Colors";
+import {
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  ImageBackground,
+  Text,
+} from "react-native";
 
 const OnboardScreen2 = (props) => {
-  
   const buttonHandler = () => {
-    console.log("clsa")
+    console.log("clsa");
     props.navigation.navigate("Auth");
   };
 
@@ -23,7 +23,7 @@ const OnboardScreen2 = (props) => {
       <ImageBackground source={image} style={styles.image} resizeMode="center">
         <TouchableOpacity onPress={buttonHandler} useForeground>
           <View style={styles.buttonContainer}>
-          <Text>Click me</Text>
+            <Text>Click me</Text>
           </View>
         </TouchableOpacity>
       </ImageBackground>
@@ -34,15 +34,15 @@ const OnboardScreen2 = (props) => {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: "#ffa5a7"
+    backgroundColor: "#ffa5a7",
   },
   image: {
-     justifyContent: "center",
+    justifyContent: "center",
     alignItems: "center",
   },
   buttonContainer: {
-    flex: 1
-  }
+    flex: 1,
+  },
 });
 
 OnboardScreen2.navigationOptions = (navData) => {
