@@ -1,39 +1,36 @@
 import React from "react";
-import { View, Text, StyleSheet, Button, ImageBackground,  } from "react-native";
+import { View, StyleSheet, ImageBackground, TouchableOpacity, Text } from "react-native";
 
 // Constants
 import COLORS from "../../constants/Colors";
 
 const OnboardScreen1 = (props) => {
   const buttonHandler = () => {
-    props.navigation.navigate("Auth");
+    props.navigation.navigate("Screen2");
   };
 
   const image = {
-    uri: "https://oceanstar-seed.s3-us-west-1.amazonaws.com/Untitled+design.png",
+    uri: "https://oceanstar-seed.s3-us-west-1.amazonaws.com/farm+to+table.png",
   };
 
   return (
-    <View style={styles.screen}>
-      <ImageBackground source={image} style={styles.image} resizeMode="center">
-        <View style={styles.buttonContainer}>
-          <Button color={COLORS.primary} title="Next" onPress={buttonHandler} />
-        </View>
-      </ImageBackground>
-    </View>
+    
+    <ImageBackground source={image} style={styles.image}>
+    <TouchableOpacity onPress={buttonHandler} useForeground>
+      <View style={styles.screen}>
+      <Text>Click me</Text>
+      </View>
+    </TouchableOpacity>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
+  screen: {flex: 1},
+  image: {
+    // flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#ffa5a7"
-  },
-  image: {
-    height: "100%",
-    width: "100%"
   },
 });
 
