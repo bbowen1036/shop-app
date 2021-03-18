@@ -128,6 +128,7 @@ const ProductsOverviewScreen = (props) => {
   );
 };
 
+
 ProductsOverviewScreen.navigationOptions = (navData) => {
   const orderLen = navData.navigation.getParam("cartLen");
 
