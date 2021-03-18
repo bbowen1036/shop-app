@@ -132,7 +132,7 @@ ProductsOverviewScreen.navigationOptions = (navData) => {
   const orderLen = navData.navigation.getParam("cartLen");
 
   return {
-    headerTitle: "All Products",
+    headerTitle: "The Marketplace",
     headerLeft: () => (
       <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
         <Item
