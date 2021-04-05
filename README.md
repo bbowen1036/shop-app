@@ -101,7 +101,7 @@ To get a local copy up and running follow these simple steps.
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-<img src="https://oceanstar-seed.s3-us-west-1.amazonaws.com/2021-03-30+17.00.49.gif" height="60%" width="60%" >
+<img src="https://oceanstar-seed.s3-us-west-1.amazonaws.com/ezgif-2-4263aebe2cad.gif" alt="gif" height="60%" width="60%" />
 
 
 
@@ -127,7 +127,7 @@ Brian Bowen - [LinkedIn](https://www.linkedin.com/in/brian-bowen-36456a7/)
 <br/>
 Email - <a href="mailto:bbowen1036@gmail.com">bbowen1036@gmail.com</a>
 
-Project Link: [https://github.com/bbowen1036/algo-app](https://github.com/bbowen1036/algo-app)
+Project Link: [https://github.com/bbowen1036/algo-app](https://github.com/bbowen1036/shop-app)
 
 
 
