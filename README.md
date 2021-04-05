@@ -101,7 +101,7 @@ To get a local copy up and running follow these simple steps.
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-<img src="https://oceanstar-seed.s3-us-west-1.amazonaws.com/ezgif-2-4263aebe2cad.gif" alt="gif" height="60%" width="60%" />
+<img src="https://oceanstar-seed.s3-us-west-1.amazonaws.com/606aad4a2b4d8577165173.gif" alt="gif" height="110%" />
 
 
 
